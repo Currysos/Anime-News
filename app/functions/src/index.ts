@@ -30,7 +30,7 @@ app.handle('Toplist', async conv => {
 
 });
 app.handle('Top_Season_Anime', async conv => {
-  let selectedSeason = conv.intent.params.selected_season;
+  const selectedSeason = conv.intent.params.selected_season.resolved;
   const data = await get_top_season_anime(selectedSeason);
   let response = `The top 5 ${selectedSeason} anime is: `;
   for (let i = 0; i < 5; i++) {
@@ -49,8 +49,8 @@ app.handle('Top_Season_Anime', async conv => {
 });
 
 app.handle('Search_Anime', async conv => {
-  let searchName = conv.intent.params.name.original;
-  let data = await search_with_name(searchName, 5);
+  const searchName = conv.intent.params.name.original;
+  const data = await search_with_name(searchName, 5);
   let response = `First 5 search results for ${searchName} is:`;
   for (let i = 0; i < 5; i++) {
     response += `\n${data[i].title},`;
@@ -204,7 +204,7 @@ async function get_toplist(type: any): Promise<object> {
 }
 //Top season anime
 async function get_top_season_anime(season: any): Promise<object> {
-  let year = new Date().getFullYear();
+  const year = new Date().getFullYear();
   const response = await fetch(`https://api.jikan.moe/v3/season/${year}/${season}`);
   const data = await response.json();
   const animes = data.anime;
